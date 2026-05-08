@@ -1,11 +1,10 @@
-// DEBUG MODE: verbose error responses. Remove debug fields after diagnosing the issue.
 // Cloudflare Pages Function: POST /api/submit-form
 // Validates Turnstile, then sends contact email via Resend.
 // Runs on the Workers runtime — only Web APIs available, no npm dependencies.
 
 const TURNSTILE_VERIFY_URL = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
 const RESEND_API_URL = 'https://api.resend.com/emails';
-const FROM_ADDRESS = 'PR Tax Consultants <noreply@send.prtaxconsultants.com>';
+const FROM_ADDRESS = 'PR Tax Consultants <noreply@prtaxconsultants.com>';
 
 const LIMITS = {
   nombre: { min: 2, max: 100 },
@@ -25,33 +24,8 @@ function json(status, body) {
   });
 }
 
-function debugFlags(env) {
-  return {
-    has_resend_key: Boolean(env && env.RESEND_API_KEY),
-    has_turnstile_secret: Boolean(env && env.TURNSTILE_SECRET_KEY),
-    has_contact_email: Boolean(env && env.CONTACT_EMAIL_TO),
-  };
-}
-
-function truncate(value, max = 500) {
-  if (value == null) return '';
-  let str;
-  if (typeof value === 'string') {
-    str = value;
-  } else {
-    try { str = JSON.stringify(value); } catch { str = String(value); }
-  }
-  return str.length > max ? str.slice(0, max) : str;
-}
-
-function bad(message, status, stage, detail, env) {
-  return json(status, {
-    ok: false,
-    message,
-    error_stage: stage,
-    error_detail: truncate(detail),
-    debug_env: debugFlags(env),
-  });
+function bad(message, status = 400) {
+  return json(status, { ok: false, message });
 }
 
 function escapeHtml(value) {
@@ -134,11 +108,20 @@ async function verifyTurnstile(token, secret, remoteIp) {
   if (remoteIp) body.append('remoteip', remoteIp);
 
   const res = await fetch(TURNSTILE_VERIFY_URL, { method: 'POST', body });
-  const status = res.status;
-  let data = null;
-  try { data = await res.json(); } catch { data = null; }
-  const success = Boolean(res.ok && data && data.success);
-  return { success, status, data };
+  if (!res.ok) {
+    console.error('[submit-form] Turnstile siteverify HTTP error:', res.status);
+    return { success: false };
+  }
+  try {
+    const data = await res.json();
+    if (!data.success) {
+      console.error('[submit-form] Turnstile rejected:', JSON.stringify(data['error-codes'] || []));
+    }
+    return { success: Boolean(data.success), data };
+  } catch (err) {
+    console.error('[submit-form] Turnstile JSON parse failed:', err && err.message);
+    return { success: false };
+  }
 }
 
 function buildEmail({ nombre, email, telefono, servicio, mensaje }) {
@@ -213,94 +196,41 @@ async function sendEmail({ apiKey, to, replyTo, subject, html, text }) {
     }),
   });
 
-  let parsedBody = null;
-  let rawBody = '';
-  try {
-    rawBody = await res.text();
-    if (rawBody) {
-      try { parsedBody = JSON.parse(rawBody); } catch { parsedBody = null; }
-    }
-  } catch {
-    rawBody = '';
+  if (!res.ok) {
+    let body = '';
+    try { body = JSON.stringify(await res.json()); } catch { body = await res.text().catch(() => ''); }
+    console.error('[submit-form] Resend error:', res.status, body);
+    throw new Error(`Resend ${res.status}`);
   }
 
-  return { ok: res.ok, status: res.status, body: parsedBody, rawBody };
+  return res.json().catch(() => ({}));
 }
 
 export async function onRequestPost(context) {
   const { request, env } = context;
 
   try {
-    // env_check
-    const missing = [];
-    if (!env || !env.RESEND_API_KEY) missing.push('RESEND_API_KEY');
-    if (!env || !env.TURNSTILE_SECRET_KEY) missing.push('TURNSTILE_SECRET_KEY');
-    if (!env || !env.CONTACT_EMAIL_TO) missing.push('CONTACT_EMAIL_TO');
-    if (missing.length) {
-      console.error('submit-form: missing required env bindings', missing);
-      return bad(
-        'Servicio no disponible temporalmente. Por favor llámanos al (939) 272-4488.',
-        500,
-        'env_check',
-        `Missing env vars: ${missing.join(', ')}`,
-        env
-      );
+    if (!env.RESEND_API_KEY || !env.TURNSTILE_SECRET_KEY || !env.CONTACT_EMAIL_TO) {
+      console.error('[submit-form] missing required env bindings');
+      return bad('Servicio no disponible temporalmente. Por favor llámanos al (939) 272-4488.', 500);
     }
 
-    // parse_body
-    let data;
-    try {
-      data = await readBody(request);
-    } catch (err) {
-      return bad(
-        'No pudimos leer la solicitud. Intenta de nuevo.',
-        400,
-        'parse_body',
-        `${err && err.name ? err.name + ': ' : ''}${err && err.message ? err.message : String(err)}`,
-        env
-      );
-    }
-
-    // validation
+    const data = await readBody(request).catch(() => ({}));
     const result = validate(data);
-    if (result.error) {
-      return bad(result.error, result.status || 422, 'validation', result.error, env);
-    }
+    if (result.error) return bad(result.error, result.status || 422);
 
     const { nombre, email, telefono, servicio, mensaje, token } = result.fields;
 
-    // turnstile_verify
     const remoteIp = request.headers.get('cf-connecting-ip') || '';
-    let verify;
-    try {
-      verify = await verifyTurnstile(token, env.TURNSTILE_SECRET_KEY, remoteIp);
-    } catch (err) {
-      return bad(
-        'Verificación de seguridad falló. Recarga la página e intenta de nuevo.',
-        403,
-        'turnstile_verify',
-        `fetch threw: ${err && err.name ? err.name + ': ' : ''}${err && err.message ? err.message : String(err)}`,
-        env
-      );
-    }
+    const verify = await verifyTurnstile(token, env.TURNSTILE_SECRET_KEY, remoteIp);
     if (!verify.success) {
-      const codes = verify.data && verify.data['error-codes'];
-      const detail = `siteverify status=${verify.status} success=${Boolean(verify.data && verify.data.success)} error-codes=${JSON.stringify(codes || [])}`;
-      return bad(
-        'Verificación de seguridad falló. Recarga la página e intenta de nuevo.',
-        403,
-        'turnstile_verify',
-        detail,
-        env
-      );
+      return bad('Verificación de seguridad falló. Recarga la página e intenta de nuevo.', 403);
     }
 
     const { subject, html, text } = buildEmail({ nombre, email, telefono, servicio, mensaje });
 
-    // resend_send
-    let sendResult;
     try {
-      sendResult = await sendEmail({
+      await sendEmail({
         apiKey: env.RESEND_API_KEY,
         to: env.CONTACT_EMAIL_TO,
         replyTo: email,
@@ -309,26 +239,10 @@ export async function onRequestPost(context) {
         text,
       });
     } catch (err) {
-      console.error('submit-form: Resend fetch threw', err && err.message ? err.message : err);
+      console.error('[submit-form] Resend send failed:', err && err.message ? err.message : err);
       return bad(
         'Error al enviar la consulta. Por favor llámanos al (939) 272-4488 mientras resolvemos.',
-        500,
-        'resend_send',
-        `fetch threw: ${err && err.name ? err.name + ': ' : ''}${err && err.message ? err.message : String(err)}`,
-        env
-      );
-    }
-
-    if (!sendResult.ok) {
-      const detailPayload = sendResult.body != null ? sendResult.body : sendResult.rawBody;
-      const detail = `Resend status=${sendResult.status} body=${truncate(detailPayload, 400)}`;
-      console.error('submit-form: Resend rejected', detail);
-      return bad(
-        'Error al enviar la consulta. Por favor llámanos al (939) 272-4488 mientras resolvemos.',
-        500,
-        'resend_send',
-        detail,
-        env
+        500
       );
     }
 
@@ -337,15 +251,8 @@ export async function onRequestPost(context) {
       message: 'Tu consulta fue enviada. Te contactaremos en 24 horas hábiles.',
     });
   } catch (err) {
-    console.error('submit-form: unexpected error', err && err.message ? err.message : err);
-    const detail = `${err && err.name ? err.name : 'Error'}: ${err && err.message ? err.message : String(err)}`;
-    return bad(
-      'Error al procesar la solicitud. Intenta de nuevo en unos momentos.',
-      500,
-      'unexpected',
-      detail,
-      env
-    );
+    console.error('[submit-form] unexpected error:', err && err.message ? err.message : err);
+    return bad('Error al procesar la solicitud. Intenta de nuevo en unos momentos.', 500);
   }
 }
 

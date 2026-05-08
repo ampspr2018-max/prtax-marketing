@@ -1018,14 +1018,8 @@
           showFeedback('success', data.message || 'Tu consulta fue enviada. Te contactaremos en 24 horas hábiles.');
         } else {
           resetTurnstile();
-          // DEBUG MODE: log full response and surface debug fields. Remove after diagnosing.
-          try { console.log('submit-form response', { status: response.status, data: data }); } catch (_) {}
-          const baseMessage = (data && data.message) ? data.message : 'No pudimos enviar tu consulta. Intenta de nuevo en unos momentos.';
-          let debugSuffix = '';
-          if (data && data.error_stage) debugSuffix += ' [stage: ' + data.error_stage + ']';
-          if (data && data.error_detail) debugSuffix += ' [detail: ' + data.error_detail + ']';
-          if (data && data.debug_env) debugSuffix += ' [env: ' + JSON.stringify(data.debug_env) + ']';
-          showFeedback('error', baseMessage + debugSuffix);
+          const message = (data && data.message) ? data.message : 'No pudimos enviar tu consulta. Intenta de nuevo en unos momentos.';
+          showFeedback('error', message);
         }
 
         setSubmitting(false);
