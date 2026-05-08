@@ -1,0 +1,898 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PR Tax Consultants — Contabilidad, Planillas y Consultoría Fiscal en Puerto Rico</title>
+  <meta name="description" content="Firma puertorriqueña de contabilidad, planillas, permisos y consultoría fiscal en Puerto Rico." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <script src="assets/tailwind.js"></script>
+
+  <style type="text/tailwindcss">
+    @theme {
+      --color-cyan: #00F7FF;
+      --color-warmgray: #8B8887;
+      --color-warmgray-dim: #5A5856;
+      --color-ink: #0A0A0B;
+      --color-ink2: #111113;
+      --color-ink3: #1A1A1D;
+      --color-line: rgba(139,136,135,0.22);
+      --color-black: #000000;
+      --color-white: #FFFFFF;
+      --font-sans: Manrope, ui-sans-serif, system-ui, sans-serif;
+      --font-serif: "Instrument Serif", ui-serif, Georgia, serif;
+      --font-mono: "JetBrains Mono", ui-monospace, monospace;
+      --container-container: 1240px;
+    }
+  </style>
+
+  <style>
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Manrope', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      color: #fff;
+      background: #0A0A0B;
+    }
+
+    /* Subtle grain over body */
+    body::before {
+      content: "";
+      position: fixed; inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      opacity: .045;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+      mix-blend-mode: screen;
+    }
+
+    /* Reveal */
+    .reveal { opacity: 1; transform: none; transition: opacity .9s ease, transform .9s ease; }
+    .js-reveal .reveal:not(.is-visible) { opacity: 0; transform: translateY(16px); }
+    .js-reveal .reveal.is-visible { opacity: 1; transform: none; }
+
+    .hairline { border-color: rgba(139,136,135,0.22); }
+    .hairline-strong { border-color: rgba(139,136,135,0.42); }
+
+    /* Header shadow on scroll */
+    .nav-blur {
+      backdrop-filter: saturate(140%) blur(12px);
+      -webkit-backdrop-filter: saturate(140%) blur(12px);
+      background: rgba(10,10,11,0.72);
+    }
+    .nav-shadow { box-shadow: 0 1px 0 rgba(139,136,135,0.18), 0 18px 40px -28px rgba(0,0,0,0.7); }
+
+    /* Cyan focus ring */
+    .focus-cyan:focus { outline: none; box-shadow: 0 0 0 2px #00F7FF; border-color: #00F7FF; }
+
+    /* Tab indicator */
+    .tab-indicator { transition: transform .35s cubic-bezier(.2,.8,.2,1), width .35s cubic-bezier(.2,.8,.2,1); }
+
+    /* Hero accent */
+    .hero-accent {
+      position: relative;
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-weight: 400;
+      color: #00F7FF;
+      letter-spacing: -0.01em;
+    }
+    .hero-accent::after {
+      content: "";
+      position: absolute;
+      left: -2%; right: -2%;
+      bottom: 4%;
+      height: 14%;
+      background: rgba(0,247,255,0.18);
+      filter: blur(8px);
+      z-index: -1;
+    }
+
+    /* Glow ring on cyan button */
+    .btn-cyan { transition: transform .2s ease, box-shadow .25s ease; }
+    .btn-cyan:hover { transform: translateY(-1px); box-shadow: 0 18px 40px -16px rgba(0,247,255,0.55), 0 0 0 1px rgba(0,247,255,0.6) inset; }
+
+    .btn-ghost { transition: background-color .2s ease, color .2s ease, border-color .2s ease; }
+    .btn-ghost:hover { background: #fff; color: #000; border-color: #fff; }
+
+    /* Section divider — cyan dot rule */
+    .rule {
+      display: flex; align-items: center; gap: 14px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+      color: #8B8887;
+    }
+    .rule::before { content: ""; width: 8px; height: 8px; background: #00F7FF; border-radius: 999px; box-shadow: 0 0 0 4px rgba(0,247,255,0.12); }
+
+    /* Service card hover */
+    .svc-card {
+      position: relative;
+      background: linear-gradient(180deg, #131316 0%, #0E0E10 100%);
+      border: 1px solid rgba(139,136,135,0.22);
+      transition: border-color .25s ease, transform .25s ease, background .25s ease;
+    }
+    .svc-card:hover {
+      border-color: rgba(0,247,255,0.55);
+      transform: translateY(-2px);
+    }
+    .svc-card::after {
+      content: "";
+      position: absolute; inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+    }
+
+    /* Marquee */
+    .marquee { display: flex; gap: 64px; white-space: nowrap; animation: marq 45s linear infinite; }
+    @keyframes marq { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    /* FAQ */
+    details > summary { list-style: none; }
+    details > summary::-webkit-details-marker { display: none; }
+
+    /* Footer link hover */
+    .footer-link { transition: color .2s ease; }
+    .footer-link:hover { color: #00F7FF; }
+
+    /* Stat number */
+    .stat-num {
+      font-family: 'Instrument Serif', serif;
+      font-weight: 400;
+      letter-spacing: -0.04em;
+      line-height: 0.9;
+    }
+
+    /* Map dark grid */
+    .map-grid-dark {
+      background-color: #0E0E10;
+      background-image:
+        linear-gradient(rgba(139,136,135,0.18) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(139,136,135,0.18) 1px, transparent 1px);
+      background-size: 28px 28px;
+    }
+
+    /* Hero radial glow */
+    .hero-glow {
+      position: absolute; inset: -10% -10% auto -10%;
+      height: 70%;
+      background: radial-gradient(60% 60% at 70% 30%, rgba(0,247,255,0.18), transparent 60%);
+      filter: blur(40px);
+      pointer-events: none; z-index: 0;
+    }
+
+    /* Mono kicker */
+    .mono { font-family: 'JetBrains Mono', monospace; font-feature-settings: "tnum" 1; }
+
+    /* Inputs */
+    .field {
+      background: #111113;
+      border: 1px solid rgba(139,136,135,0.28);
+      color: #fff;
+    }
+    .field::placeholder { color: #6c6a68; }
+
+    /* Subtle dividing line top of sections */
+    .top-rule { border-top: 1px solid rgba(139,136,135,0.18); }
+
+    /* Tabs underline base */
+    .tab-track { border-bottom: 1px solid rgba(139,136,135,0.22); }
+
+    /* Number tabs (panel headings) */
+    .num-cyan { color: #00F7FF; font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.18em; }
+
+    /* Process timeline tweaks */
+    .step-num {
+      font-family: 'Instrument Serif', serif;
+      font-weight: 400;
+      font-size: 88px;
+      line-height: 0.9;
+      color: #00F7FF;
+      letter-spacing: -0.03em;
+    }
+
+    /* Star color */
+    .star { color: #00F7FF; }
+
+    /* Prevent grain from blocking content interactions even though pointer-events:none */
+    main, header, footer { position: relative; z-index: 1; }
+  </style>
+  <template id="__bundler_thumbnail" data-bg-color="#0A0A0B">
+    <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+      <rect width="1200" height="800" fill="#0A0A0B"/>
+      <g transform="translate(600 400)" font-family="Georgia, serif">
+        <text text-anchor="middle" y="-20" fill="#FFFFFF" font-size="180" font-weight="800" letter-spacing="-6">PR</text>
+        <text text-anchor="middle" y="80" fill="#00F7FF" font-style="italic" font-size="80">tax</text>
+        <circle cx="0" cy="160" r="8" fill="#00F7FF"/>
+      </g>
+    </svg>
+  </template>
+</head>
+<body class="bg-ink text-white">
+
+  <!-- HEADER -->
+  <header id="site-header" class="sticky top-0 z-50 nav-blur">
+    <div class="max-w-container mx-auto px-6 lg:px-10 h-24 flex items-center justify-between">
+      <a href="#inicio" class="flex items-center gap-3" aria-label="PR Tax Consultants — Inicio">
+        <img src="assets/logo-blanco-transparent.png" alt="PR Tax Consultants" class="h-16 w-auto" />
+      </a>
+
+      <nav class="hidden lg:flex items-center gap-9 text-[14px]" aria-label="Navegación principal">
+        <a href="#inicio" class="text-white/85 hover:text-white transition-colors">Inicio</a>
+        <a href="#servicios" class="text-white/85 hover:text-white transition-colors">Servicios</a>
+        <a href="#nosotros" class="text-white/85 hover:text-white transition-colors">Nosotros</a>
+        <a href="#recursos" class="text-white/85 hover:text-white transition-colors">Recursos</a>
+        <a href="#contacto" class="text-white/85 hover:text-white transition-colors">Contacto</a>
+      </nav>
+
+      <div class="flex items-center gap-3">
+        <a href="https://portal.prtaxconsultants.com" class="btn-ghost hidden sm:inline-flex items-center gap-2 bg-transparent text-white font-semibold text-[13.5px] px-5 py-2.5 rounded-full border border-white/40">
+          Iniciar sesión
+        </a>
+        <a href="#contacto" class="btn-cyan inline-flex items-center gap-2 bg-cyan text-black font-semibold text-[13.5px] px-5 py-2.5 rounded-full">
+          Agenda tu Consulta
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 5 7 7-7 7"/></svg>
+        </a>
+        <button id="menu-btn" class="lg:hidden p-2 -mr-2 text-white" aria-label="Abrir menú">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M3 12h18"/><path d="M3 18h18"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div id="mobile-menu" class="hidden lg:hidden border-t hairline">
+      <nav class="max-w-container mx-auto px-6 py-4 flex flex-col gap-3 text-[15px]">
+        <a href="#inicio" class="py-2">Inicio</a>
+        <a href="#servicios" class="py-2">Servicios</a>
+        <a href="#nosotros" class="py-2">Nosotros</a>
+        <a href="#recursos" class="py-2">Recursos</a>
+        <a href="#contacto" class="py-2">Contacto</a>
+        <a href="https://portal.prtaxconsultants.com" class="py-2 text-cyan font-semibold">Iniciar sesión →</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="inicio">
+
+    <!-- HERO -->
+    <section class="relative overflow-hidden">
+      <div class="hero-glow"></div>
+
+      <div class="max-w-container mx-auto px-6 lg:px-10 pt-16 lg:pt-24 pb-20 lg:pb-28 relative">
+        <!-- Top mono row -->
+        <div class="flex items-center justify-between mono text-[11px] tracking-[0.18em] uppercase text-warmgray mb-10">
+          <span class="rule">Bayamón · Puerto Rico</span>
+        </div>
+
+        <div class="grid lg:grid-cols-12 gap-12 lg:gap-16 items-end">
+          <div class="lg:col-span-8 reveal">
+            <h1 class="text-[52px] sm:text-[72px] lg:text-[104px] leading-[0.95] tracking-[-0.025em] font-extrabold">
+              Tu negocio en<br/>
+              <span class="hero-accent">cumplimiento</span>.<br/>
+              Tu mente en paz.
+            </h1>
+          </div>
+
+          <div class="lg:col-span-4 reveal">
+            <p class="text-[16px] lg:text-[17px] leading-[1.65] text-white/75 max-w-md">
+              Contabilidad, planillas, permisos y consultoría fiscal en Puerto Rico. Todo lo que tu negocio necesita, en un solo lugar.
+            </p>
+
+            <div class="mt-7 flex flex-col sm:flex-row gap-3">
+              <a href="#contacto" class="btn-cyan inline-flex items-center justify-center gap-2 bg-cyan text-black font-semibold text-[14px] px-5 py-3.5 rounded-full">
+                Agenda tu Consulta Gratis
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 5 7 7-7 7"/></svg>
+              </a>
+              <a href="#servicios" class="btn-ghost inline-flex items-center justify-center gap-2 bg-transparent text-white font-semibold text-[14px] px-5 py-3.5 rounded-full border border-white/40">
+                Ver Servicios
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Marquee -->
+      <div class="border-y hairline py-5 mono text-[12px] tracking-[0.22em] uppercase text-white/60 overflow-hidden">
+        <div class="marquee">
+          <span class="flex items-center gap-3">Hacienda <span class="text-cyan">●</span></span>
+          <span class="flex items-center gap-3">SURI <span class="text-cyan">●</span></span>
+          <span class="flex items-center gap-3">CRIM <span class="text-cyan">●</span></span>
+          <span class="flex items-center gap-3">CFSE <span class="text-cyan">●</span></span>
+          <span class="flex items-center gap-3">IRS <span class="text-cyan">●</span></span>
+          <span class="flex items-center gap-3">Departamento de Estado <span class="text-cyan">●</span></span>
+          <span class="flex items-center gap-3">Departamento del Trabajo <span class="text-cyan">●</span></span>
+          <span class="flex items-center gap-3">Municipios <span class="text-cyan">●</span></span>
+          <!-- duplicate -->
+          <span class="flex items-center gap-3">Hacienda <span class="text-cyan">●</span></span>
+          <span class="flex items-center gap-3">SURI <span class="text-cyan">●</span></span>
+          <span class="flex items-center gap-3">CRIM <span class="text-cyan">●</span></span>
+          <span class="flex items-center gap-3">CFSE <span class="text-cyan">●</span></span>
+          <span class="flex items-center gap-3">IRS <span class="text-cyan">●</span></span>
+          <span class="flex items-center gap-3">Departamento de Estado <span class="text-cyan">●</span></span>
+          <span class="flex items-center gap-3">Departamento del Trabajo <span class="text-cyan">●</span></span>
+          <span class="flex items-center gap-3">Municipios <span class="text-cyan">●</span></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- SERVICIOS -->
+    <section id="servicios" class="relative">
+      <div class="max-w-container mx-auto px-6 lg:px-10 py-24 lg:py-32">
+        <div class="grid lg:grid-cols-12 gap-10 reveal">
+          <div class="lg:col-span-7">
+            <div class="rule mb-6">Servicios · 04 categorías</div>
+            <h2 class="text-[40px] lg:text-[64px] leading-[1.02] font-extrabold tracking-[-0.025em]">
+              Diseñados para tu <span class="hero-accent">tranquilidad</span>.
+            </h2>
+          </div>
+          <div class="lg:col-span-5 lg:pt-4">
+            <p class="text-[17px] text-white/70 leading-relaxed">
+              Cuatro áreas clave para cubrir todo lo que tu negocio necesita — sin tener que coordinar entre múltiples proveedores.
+            </p>
+          </div>
+        </div>
+
+        <!-- Tabs -->
+        <div id="services-tabs" class="mt-16 reveal">
+          <div role="tablist" class="relative flex flex-wrap gap-x-8 gap-y-2 tab-track">
+            <button role="tab" aria-selected="true" data-tab="0" class="tab-btn relative -mb-px py-4 text-[15px] font-semibold text-white">
+              <span class="mono text-cyan text-[11px] mr-2">01</span> Contabilidad y Finanzas
+            </button>
+            <button role="tab" aria-selected="false" data-tab="1" class="tab-btn relative -mb-px py-4 text-[15px] font-medium text-warmgray hover:text-white transition-colors">
+              <span class="mono text-cyan text-[11px] mr-2">02</span> Planillas y Cumplimiento
+            </button>
+            <button role="tab" aria-selected="false" data-tab="2" class="tab-btn relative -mb-px py-4 text-[15px] font-medium text-warmgray hover:text-white transition-colors">
+              <span class="mono text-cyan text-[11px] mr-2">03</span> Permisos y Licencias
+            </button>
+            <button role="tab" aria-selected="false" data-tab="3" class="tab-btn relative -mb-px py-4 text-[15px] font-medium text-warmgray hover:text-white transition-colors">
+              <span class="mono text-cyan text-[11px] mr-2">04</span> Negocios y Propiedades
+            </button>
+            <span id="tab-indicator" class="tab-indicator absolute bottom-0 left-0 h-[2px] bg-cyan" style="width:0;transform:translateX(0)"></span>
+          </div>
+
+          <!-- Panels -->
+          <div id="tab-panels" class="mt-12">
+            <!-- Panel 0 -->
+            <div data-panel="0" class="tab-panel grid lg:grid-cols-12 gap-10 lg:gap-14">
+              <div class="lg:col-span-4">
+                <div class="num-cyan mb-3">CATEGORÍA 01</div>
+                <h3 class="text-[28px] font-bold leading-tight">Contabilidad y Finanzas</h3>
+                <p class="mt-4 text-white/70 leading-relaxed">Mantén tus libros al día y tu nómina en orden. Información financiera clara para tomar mejores decisiones.</p>
+              </div>
+              <div class="lg:col-span-8 grid sm:grid-cols-2 gap-4">
+                <article class="svc-card rounded-2xl p-6">
+                  <div class="w-10 h-10 rounded-lg border hairline-strong flex items-center justify-center text-cyan">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 8h10"/><path d="M7 12h10"/><path d="M7 16h6"/></svg>
+                  </div>
+                  <h4 class="mt-4 font-semibold">Contabilidad Mensual</h4>
+                  <p class="mt-1.5 text-[14px] text-white/65 leading-relaxed">Cierre, conciliaciones y estados financieros entregados a tiempo.</p>
+                </article>
+                <article class="svc-card rounded-2xl p-6">
+                  <div class="w-10 h-10 rounded-lg border hairline-strong flex items-center justify-center text-cyan">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                  </div>
+                  <h4 class="mt-4 font-semibold">Nómina</h4>
+                  <p class="mt-1.5 text-[14px] text-white/65 leading-relaxed">Procesamiento, retenciones y depósitos federales y estatales.</p>
+                </article>
+                <article class="svc-card rounded-2xl p-6 sm:col-span-2">
+                  <div class="w-10 h-10 rounded-lg border hairline-strong flex items-center justify-center text-cyan">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 13h6"/><path d="M9 17h6"/></svg>
+                  </div>
+                  <h4 class="mt-4 font-semibold">Manuales de Empleados</h4>
+                  <p class="mt-1.5 text-[14px] text-white/65 leading-relaxed">Políticas internas alineadas a la legislación laboral de Puerto Rico.</p>
+                </article>
+              </div>
+            </div>
+
+            <!-- Panel 1 -->
+            <div data-panel="1" class="tab-panel hidden grid lg:grid-cols-12 gap-10 lg:gap-14">
+              <div class="lg:col-span-4">
+                <div class="num-cyan mb-3">CATEGORÍA 02</div>
+                <h3 class="text-[28px] font-bold leading-tight">Planillas y Cumplimiento Fiscal</h3>
+                <p class="mt-4 text-white/70 leading-relaxed">Preparación, radicación y seguimiento ante Hacienda, IRS, SURI, CRIM y CFSE.</p>
+              </div>
+              <div class="lg:col-span-8 grid sm:grid-cols-2 gap-4">
+                <article class="svc-card rounded-2xl p-6">
+                  <div class="w-10 h-10 rounded-lg border hairline-strong flex items-center justify-center text-cyan">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h6"/><path d="M12 9v6"/><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+                  </div>
+                  <h4 class="mt-4 font-semibold">Planillas Estatales, Federales y Corporativas</h4>
+                  <p class="mt-1.5 text-[14px] text-white/65 leading-relaxed">Personas, sociedades y corporaciones en PR y EE. UU.</p>
+                </article>
+                <article class="svc-card rounded-2xl p-6">
+                  <div class="w-10 h-10 rounded-lg border hairline-strong flex items-center justify-center text-cyan">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h18"/><path d="M3 12h18"/><path d="M3 17h12"/></svg>
+                  </div>
+                  <h4 class="mt-4 font-semibold">Planillas de IVU</h4>
+                  <p class="mt-1.5 text-[14px] text-white/65 leading-relaxed">Cálculo, radicación mensual y reconciliación trimestral.</p>
+                </article>
+                <article class="svc-card rounded-2xl p-6">
+                  <div class="w-10 h-10 rounded-lg border hairline-strong flex items-center justify-center text-cyan">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+                  </div>
+                  <h4 class="mt-4 font-semibold">Planillas Trimestrales — Salarios y Servicios</h4>
+                  <p class="mt-1.5 text-[14px] text-white/65 leading-relaxed">499R-1B, W-3PR, 940/941 y formularios afines.</p>
+                </article>
+                <article class="svc-card rounded-2xl p-6">
+                  <div class="w-10 h-10 rounded-lg border hairline-strong flex items-center justify-center text-cyan">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v6H4z"/><path d="M4 14h16v6H4z"/></svg>
+                  </div>
+                  <h4 class="mt-4 font-semibold">SURI</h4>
+                  <p class="mt-1.5 text-[14px] text-white/65 leading-relaxed">Registro, manejo de cuenta y radicaciones electrónicas.</p>
+                </article>
+                <article class="svc-card rounded-2xl p-6">
+                  <div class="w-10 h-10 rounded-lg border hairline-strong flex items-center justify-center text-cyan">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V8l7-4 7 4v13"/><path d="M9 21v-6h6v6"/></svg>
+                  </div>
+                  <h4 class="mt-4 font-semibold">CRIM</h4>
+                  <p class="mt-1.5 text-[14px] text-white/65 leading-relaxed">Propiedad mueble e inmueble: declaraciones y pagos.</p>
+                </article>
+                <article class="svc-card rounded-2xl p-6">
+                  <div class="w-10 h-10 rounded-lg border hairline-strong flex items-center justify-center text-cyan">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-12V5l-8-3-8 3v5c0 8 8 12 8 12z"/></svg>
+                  </div>
+                  <h4 class="mt-4 font-semibold">CFSE — Fondo del Seguro del Estado</h4>
+                  <p class="mt-1.5 text-[14px] text-white/65 leading-relaxed">Pólizas, renovaciones y cumplimiento patronal.</p>
+                </article>
+              </div>
+            </div>
+
+            <!-- Panel 2 -->
+            <div data-panel="2" class="tab-panel hidden grid lg:grid-cols-12 gap-10 lg:gap-14">
+              <div class="lg:col-span-4">
+                <div class="num-cyan mb-3">CATEGORÍA 03</div>
+                <h3 class="text-[28px] font-bold leading-tight">Permisos y Licencias</h3>
+                <p class="mt-4 text-white/70 leading-relaxed">Tramitamos los permisos municipales y estatales para que tu operación sea legal desde el día uno.</p>
+              </div>
+              <div class="lg:col-span-8 grid sm:grid-cols-2 gap-4">
+                <article class="svc-card rounded-2xl p-6">
+                  <div class="w-10 h-10 rounded-lg border hairline-strong flex items-center justify-center text-cyan">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>
+                  </div>
+                  <h4 class="mt-4 font-semibold">Permiso de Uso</h4>
+                  <p class="mt-1.5 text-[14px] text-white/65 leading-relaxed">Solicitud, renovación y endosos para tu local.</p>
+                </article>
+                <article class="svc-card rounded-2xl p-6">
+                  <div class="w-10 h-10 rounded-lg border hairline-strong flex items-center justify-center text-cyan">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V10l7-5 7 5v11"/><path d="M10 21v-6h4v6"/></svg>
+                  </div>
+                  <h4 class="mt-4 font-semibold">Patentes Municipales</h4>
+                  <p class="mt-1.5 text-[14px] text-white/65 leading-relaxed">Volúmenes de negocio y declaraciones por municipio.</p>
+                </article>
+                <article class="svc-card rounded-2xl p-6">
+                  <div class="w-10 h-10 rounded-lg border hairline-strong flex items-center justify-center text-cyan">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/><path d="M3 6h13l3 8h-3"/><path d="M16 14V6"/></svg>
+                  </div>
+                  <h4 class="mt-4 font-semibold">Negocio Ambulante</h4>
+                  <p class="mt-1.5 text-[14px] text-white/65 leading-relaxed">Permisos para food trucks, ventas móviles y eventos.</p>
+                </article>
+                <article class="svc-card rounded-2xl p-6">
+                  <div class="w-10 h-10 rounded-lg border hairline-strong flex items-center justify-center text-cyan">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 14l2 2 4-4"/></svg>
+                  </div>
+                  <h4 class="mt-4 font-semibold">Decretos</h4>
+                  <p class="mt-1.5 text-[14px] text-white/65 leading-relaxed">Acompañamiento en Ley 60 y otros decretos contributivos.</p>
+                </article>
+              </div>
+            </div>
+
+            <!-- Panel 3 -->
+            <div data-panel="3" class="tab-panel hidden grid lg:grid-cols-12 gap-10 lg:gap-14">
+              <div class="lg:col-span-4">
+                <div class="num-cyan mb-3">CATEGORÍA 04</div>
+                <h3 class="text-[28px] font-bold leading-tight">Negocios y Propiedades</h3>
+                <p class="mt-4 text-white/70 leading-relaxed">Estructura tu negocio correctamente y opera tu Airbnb con la tranquilidad de estar al día.</p>
+              </div>
+              <div class="lg:col-span-8 grid sm:grid-cols-2 gap-4">
+                <article class="svc-card rounded-2xl p-6">
+                  <div class="w-10 h-10 rounded-lg border hairline-strong flex items-center justify-center text-cyan">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V8l9-5 9 5v13"/><path d="M9 21v-6h6v6"/></svg>
+                  </div>
+                  <h4 class="mt-4 font-semibold">Creación de Corporaciones</h4>
+                  <p class="mt-1.5 text-[14px] text-white/65 leading-relaxed">LLC, INC y registros en el Departamento de Estado.</p>
+                </article>
+                <article class="svc-card rounded-2xl p-6">
+                  <div class="w-10 h-10 rounded-lg border hairline-strong flex items-center justify-center text-cyan">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg>
+                  </div>
+                  <h4 class="mt-4 font-semibold">Administración de Airbnb</h4>
+                  <p class="mt-1.5 text-[14px] text-white/65 leading-relaxed">Registro de hospedaje, IVU, CRIM y reportes mensuales.</p>
+                </article>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- POR QUÉ ELEGIRNOS -->
+    <section id="nosotros" class="top-rule">
+      <div class="max-w-container mx-auto px-6 lg:px-10 py-24 lg:py-32">
+        <div class="grid lg:grid-cols-12 gap-10 reveal">
+          <div class="lg:col-span-7">
+            <div class="rule mb-6">Por qué elegirnos</div>
+            <h2 class="text-[40px] lg:text-[60px] leading-[1.02] font-extrabold tracking-[-0.025em]">
+              Una firma local que trabaja como tu <span class="hero-accent">socio</span>.
+            </h2>
+          </div>
+        </div>
+
+        <div class="mt-14 grid md:grid-cols-3 gap-px bg-line/60 border hairline rounded-2xl overflow-hidden reveal">
+          <article class="bg-ink2 p-8 lg:p-10">
+            <div class="w-11 h-11 rounded-xl border hairline-strong flex items-center justify-center text-cyan">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-12V5l-8-3-8 3v5c0 8 8 12 8 12z"/><path d="m9 12 2 2 4-4"/></svg>
+            </div>
+            <h3 class="mt-6 text-[22px] font-bold">Conocimiento Local</h3>
+            <p class="mt-2 text-white/65 leading-relaxed text-[15px]">Dominamos el sistema tributario de PR — Hacienda, SURI, CRIM, CFSE y municipios.</p>
+          </article>
+
+          <article class="bg-ink2 p-8 lg:p-10">
+            <div class="w-11 h-11 rounded-xl border hairline-strong flex items-center justify-center text-cyan">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+            </div>
+            <h3 class="mt-6 text-[22px] font-bold">Atención Personalizada</h3>
+            <p class="mt-2 text-white/65 leading-relaxed text-[15px]">Un consultor asignado que conoce tu negocio y responde cuando lo necesitas.</p>
+          </article>
+
+          <article class="bg-ink2 p-8 lg:p-10">
+            <div class="w-11 h-11 rounded-xl border hairline-strong flex items-center justify-center text-cyan">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <h3 class="mt-6 text-[22px] font-bold">Cumplimiento Garantizado</h3>
+            <p class="mt-2 text-white/65 leading-relaxed text-[15px]">Plazos, pagos y radicaciones a tiempo. Sin penalidades, sin sorpresas.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ALCANCE COMPLETO -->
+    <section class="top-rule">
+      <div class="max-w-container mx-auto px-6 lg:px-10 py-24 lg:py-32">
+        <div class="reveal max-w-3xl">
+          <div class="rule mb-6">Alcance completo</div>
+          <h2 class="text-[40px] lg:text-[60px] leading-[1.02] font-extrabold tracking-[-0.025em]">
+            Todo lo que cubrimos por ti
+          </h2>
+          <p class="mt-5 text-[17px] text-white/70 leading-relaxed">Categorías del ecosistema fiscal y regulatorio de Puerto Rico que manejamos para tu negocio.</p>
+        </div>
+
+        <div class="mt-14 reveal">
+          <div class="flex flex-col md:flex-row md:items-baseline gap-5 md:gap-8 py-5 border-t hairline">
+            <div class="mono text-[11px] tracking-[0.18em] uppercase text-warmgray md:min-w-[140px] md:flex-shrink-0">Estatales</div>
+            <div class="flex flex-wrap gap-2 flex-1">
+              <span class="inline-flex items-center gap-2 text-[13px] text-white px-3.5 py-2 rounded-full border" style="background: rgba(0,247,255,0.05); border-color: rgba(0,247,255,0.22);"><span class="w-1.5 h-1.5 rounded-full bg-cyan"></span> Hacienda PR</span>
+              <span class="inline-flex items-center gap-2 text-[13px] text-white px-3.5 py-2 rounded-full border" style="background: rgba(0,247,255,0.05); border-color: rgba(0,247,255,0.22);"><span class="w-1.5 h-1.5 rounded-full bg-cyan"></span> SURI</span>
+              <span class="inline-flex items-center gap-2 text-[13px] text-white px-3.5 py-2 rounded-full border" style="background: rgba(0,247,255,0.05); border-color: rgba(0,247,255,0.22);"><span class="w-1.5 h-1.5 rounded-full bg-cyan"></span> IVU</span>
+              <span class="inline-flex items-center gap-2 text-[13px] text-white px-3.5 py-2 rounded-full border" style="background: rgba(0,247,255,0.05); border-color: rgba(0,247,255,0.22);"><span class="w-1.5 h-1.5 rounded-full bg-cyan"></span> CFSE</span>
+              <span class="inline-flex items-center gap-2 text-[13px] text-white px-3.5 py-2 rounded-full border" style="background: rgba(0,247,255,0.05); border-color: rgba(0,247,255,0.22);"><span class="w-1.5 h-1.5 rounded-full bg-cyan"></span> Contribución sobre ingresos PR</span>
+              <span class="inline-flex items-center gap-2 text-[13px] text-white px-3.5 py-2 rounded-full border" style="background: rgba(0,247,255,0.05); border-color: rgba(0,247,255,0.22);"><span class="w-1.5 h-1.5 rounded-full bg-cyan"></span> Planillas corporativas</span>
+              <span class="inline-flex items-center gap-2 text-[13px] text-white px-3.5 py-2 rounded-full border" style="background: rgba(0,247,255,0.05); border-color: rgba(0,247,255,0.22);"><span class="w-1.5 h-1.5 rounded-full bg-cyan"></span> Planillas estatales otros estados US</span>
+            </div>
+          </div>
+
+          <div class="flex flex-col md:flex-row md:items-baseline gap-5 md:gap-8 py-5 border-t hairline">
+            <div class="mono text-[11px] tracking-[0.18em] uppercase text-warmgray md:min-w-[140px] md:flex-shrink-0">Federales</div>
+            <div class="flex flex-wrap gap-2 flex-1">
+              <span class="inline-flex items-center gap-2 text-[13px] text-white px-3.5 py-2 rounded-full border" style="background: rgba(0,247,255,0.05); border-color: rgba(0,247,255,0.22);"><span class="w-1.5 h-1.5 rounded-full bg-cyan"></span> 1040-SS</span>
+              <span class="inline-flex items-center gap-2 text-[13px] text-white px-3.5 py-2 rounded-full border" style="background: rgba(0,247,255,0.05); border-color: rgba(0,247,255,0.22);"><span class="w-1.5 h-1.5 rounded-full bg-cyan"></span> 1040-US</span>
+            </div>
+          </div>
+
+          <div class="flex flex-col md:flex-row md:items-baseline gap-5 md:gap-8 py-5 border-t hairline">
+            <div class="mono text-[11px] tracking-[0.18em] uppercase text-warmgray md:min-w-[140px] md:flex-shrink-0">Municipales</div>
+            <div class="flex flex-wrap gap-2 flex-1">
+              <span class="inline-flex items-center gap-2 text-[13px] text-white px-3.5 py-2 rounded-full border" style="background: rgba(0,247,255,0.05); border-color: rgba(0,247,255,0.22);"><span class="w-1.5 h-1.5 rounded-full bg-cyan"></span> CRIM</span>
+              <span class="inline-flex items-center gap-2 text-[13px] text-white px-3.5 py-2 rounded-full border" style="background: rgba(0,247,255,0.05); border-color: rgba(0,247,255,0.22);"><span class="w-1.5 h-1.5 rounded-full bg-cyan"></span> Patentes municipales</span>
+            </div>
+          </div>
+
+          <div class="flex flex-col md:flex-row md:items-baseline gap-5 md:gap-8 py-5 border-t hairline">
+            <div class="mono text-[11px] tracking-[0.18em] uppercase text-warmgray md:min-w-[140px] md:flex-shrink-0">Permisos</div>
+            <div class="flex flex-wrap gap-2 flex-1">
+              <span class="inline-flex items-center gap-2 text-[13px] text-white px-3.5 py-2 rounded-full border" style="background: rgba(0,247,255,0.05); border-color: rgba(0,247,255,0.22);"><span class="w-1.5 h-1.5 rounded-full bg-cyan"></span> OGPe · Permiso de uso</span>
+              <span class="inline-flex items-center gap-2 text-[13px] text-white px-3.5 py-2 rounded-full border" style="background: rgba(0,247,255,0.05); border-color: rgba(0,247,255,0.22);"><span class="w-1.5 h-1.5 rounded-full bg-cyan"></span> Negocios ambulantes</span>
+            </div>
+          </div>
+
+          <div class="flex flex-col md:flex-row md:items-baseline gap-5 md:gap-8 py-5 border-t hairline">
+            <div class="mono text-[11px] tracking-[0.18em] uppercase text-warmgray md:min-w-[140px] md:flex-shrink-0">Incentivos</div>
+            <div class="flex flex-wrap gap-2 flex-1">
+              <span class="inline-flex items-center gap-2 text-[13px] text-white px-3.5 py-2 rounded-full border" style="background: rgba(0,247,255,0.05); border-color: rgba(0,247,255,0.22);"><span class="w-1.5 h-1.5 rounded-full bg-cyan"></span> DDEC</span>
+              <span class="inline-flex items-center gap-2 text-[13px] text-white px-3.5 py-2 rounded-full border" style="background: rgba(0,247,255,0.05); border-color: rgba(0,247,255,0.22);"><span class="w-1.5 h-1.5 rounded-full bg-cyan"></span> Ley 60</span>
+            </div>
+          </div>
+
+          <div class="flex flex-col md:flex-row md:items-baseline gap-5 md:gap-8 py-5 border-t border-b hairline">
+            <div class="mono text-[11px] tracking-[0.18em] uppercase text-warmgray md:min-w-[140px] md:flex-shrink-0">Propiedades</div>
+            <div class="flex flex-wrap gap-2 flex-1">
+              <span class="inline-flex items-center gap-2 text-[13px] text-white px-3.5 py-2 rounded-full border" style="background: rgba(0,247,255,0.05); border-color: rgba(0,247,255,0.22);"><span class="w-1.5 h-1.5 rounded-full bg-cyan"></span> Administración de Airbnb</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA INTERMEDIA — banda con borde cyan -->
+    <section class="top-rule">
+      <div class="max-w-container mx-auto px-6 lg:px-10 py-24 lg:py-28">
+        <div class="relative rounded-3xl border hairline-strong overflow-hidden bg-ink2 p-10 lg:p-16 reveal">
+          <div class="absolute -top-24 -right-24 w-[420px] h-[420px] rounded-full" style="background: radial-gradient(circle, rgba(0,247,255,0.18), transparent 60%); filter: blur(20px);"></div>
+          <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan to-transparent"></div>
+
+          <div class="relative grid md:grid-cols-12 gap-10 items-center">
+            <div class="md:col-span-8">
+              <div class="rule mb-5">Listo para empezar</div>
+              <h2 class="text-[36px] lg:text-[60px] leading-[1.02] font-extrabold tracking-[-0.025em]">
+                ¿Listo para poner tu negocio en <span class="hero-accent">orden</span>?
+              </h2>
+              <p class="mt-5 text-[17px] text-white/70 max-w-2xl">
+                Agenda una consulta gratis y conversemos sobre cómo dejar tu contabilidad, planillas y permisos al día.
+              </p>
+            </div>
+            <div class="md:col-span-4 md:text-right">
+              <a href="#contacto" class="btn-cyan inline-flex items-center justify-center gap-2 bg-cyan text-black font-semibold text-[15px] px-7 py-4 rounded-full">
+                Habla con un Consultor
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 5 7 7-7 7"/></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="recursos" class="top-rule">
+      <div class="max-w-container mx-auto px-6 lg:px-10 py-24 lg:py-32 grid lg:grid-cols-12 gap-12">
+        <div class="lg:col-span-4 reveal">
+          <div class="rule mb-6">Preguntas frecuentes</div>
+          <h2 class="text-[40px] lg:text-[52px] leading-[1.05] font-extrabold tracking-[-0.025em]">
+            Lo que más nos preguntan
+          </h2>
+          <p class="mt-5 text-white/70 leading-relaxed">¿No encuentras tu pregunta? Escríbenos y te respondemos en 24 horas hábiles.</p>
+        </div>
+
+        <div class="lg:col-span-8 reveal">
+          <div class="border-t hairline">
+            <details class="group border-b hairline py-5">
+              <summary class="flex items-start justify-between gap-6 cursor-pointer">
+                <span class="text-[17px] font-semibold text-white">¿Qué documentos necesito para la planilla?</span>
+                <span class="shrink-0 mt-1 text-cyan transition-transform group-open:rotate-45">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+                </span>
+              </summary>
+              <p class="mt-3 text-white/70 leading-relaxed text-[15px]">Como mínimo: identificación, W-2 / 480.6 / 1099, evidencia de ingresos y gastos, y planillas anteriores. En la consulta inicial te entregamos un checklist específico para tu caso.</p>
+            </details>
+            <details class="group border-b hairline py-5">
+              <summary class="flex items-start justify-between gap-6 cursor-pointer">
+                <span class="text-[17px] font-semibold text-white">¿Cuándo vence el Permiso Único?</span>
+                <span class="shrink-0 mt-1 text-cyan transition-transform group-open:rotate-45">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+                </span>
+              </summary>
+              <p class="mt-3 text-white/70 leading-relaxed text-[15px]">El Permiso Único se renueva cada dos años. Te recomendamos iniciar el proceso con al menos 60 días de anticipación; nosotros te avisamos antes de que llegue la fecha.</p>
+            </details>
+            <details class="group border-b hairline py-5">
+              <summary class="flex items-start justify-between gap-6 cursor-pointer">
+                <span class="text-[17px] font-semibold text-white">¿Tengo que cobrar IVU si soy Airbnb?</span>
+                <span class="shrink-0 mt-1 text-cyan transition-transform group-open:rotate-45">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+                </span>
+              </summary>
+              <p class="mt-3 text-white/70 leading-relaxed text-[15px]">Las hospederías de corto plazo en PR generalmente están sujetas al impuesto de hospedaje y, según la operación, al IVU. Te ayudamos a registrarte y a cumplir mes a mes.</p>
+            </details>
+            <details class="group border-b hairline py-5">
+              <summary class="flex items-start justify-between gap-6 cursor-pointer">
+                <span class="text-[17px] font-semibold text-white">¿Cuánto cuesta crear una corporación?</span>
+                <span class="shrink-0 mt-1 text-cyan transition-transform group-open:rotate-45">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+                </span>
+              </summary>
+              <p class="mt-3 text-white/70 leading-relaxed text-[15px]">Depende del tipo de entidad (LLC, INC) y los registros adicionales (EIN, SURI, patente). Te entregamos una cotización fija después de la consulta inicial gratuita.</p>
+            </details>
+            <details class="group border-b hairline py-5">
+              <summary class="flex items-start justify-between gap-6 cursor-pointer">
+                <span class="text-[17px] font-semibold text-white">¿Qué es SURI y por qué lo necesito?</span>
+                <span class="shrink-0 mt-1 text-cyan transition-transform group-open:rotate-45">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+                </span>
+              </summary>
+              <p class="mt-3 text-white/70 leading-relaxed text-[15px]">SURI es el sistema unificado de Hacienda donde se registran y radican planillas, IVU, retenciones y más. Si tienes negocio o ingresos en PR, lo necesitas.</p>
+            </details>
+            <details class="group border-b hairline py-5">
+              <summary class="flex items-start justify-between gap-6 cursor-pointer">
+                <span class="text-[17px] font-semibold text-white">¿Atienden clientes en toda la isla?</span>
+                <span class="shrink-0 mt-1 text-cyan transition-transform group-open:rotate-45">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+                </span>
+              </summary>
+              <p class="mt-3 text-white/70 leading-relaxed text-[15px]">Sí. Trabajamos con clientes en toda la isla de manera presencial y virtual. Las consultas se pueden hacer por video, teléfono o en oficina.</p>
+            </details>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACTO -->
+    <section id="contacto" class="top-rule">
+      <div class="max-w-container mx-auto px-6 lg:px-10 py-24 lg:py-32 grid lg:grid-cols-12 gap-12">
+        <div class="lg:col-span-7 reveal">
+          <div class="rule mb-6">Contacto</div>
+          <h2 class="text-[40px] lg:text-[60px] leading-[1.02] font-extrabold tracking-[-0.025em]">
+            Conversemos sobre tu <span class="hero-accent">negocio</span>
+          </h2>
+          <p class="mt-5 text-white/70 leading-relaxed max-w-xl">
+            Completa el formulario y un consultor te contactará dentro de 24 horas hábiles.
+          </p>
+
+          <form class="mt-10 grid sm:grid-cols-2 gap-5" onsubmit="event.preventDefault(); this.querySelector('button[type=submit]').innerText='Enviado ✓';">
+            <label class="block">
+              <span class="block text-[12px] font-medium mb-2 text-warmgray uppercase tracking-[0.16em] mono">Nombre completo</span>
+              <input required type="text" class="field focus-cyan w-full rounded-lg px-4 py-3 text-[15px]" placeholder="Tu nombre" />
+            </label>
+            <label class="block">
+              <span class="block text-[12px] font-medium mb-2 text-warmgray uppercase tracking-[0.16em] mono">Email</span>
+              <input required type="email" class="field focus-cyan w-full rounded-lg px-4 py-3 text-[15px]" placeholder="tu@email.com" />
+            </label>
+            <label class="block">
+              <span class="block text-[12px] font-medium mb-2 text-warmgray uppercase tracking-[0.16em] mono">Teléfono</span>
+              <input type="tel" class="field focus-cyan w-full rounded-lg px-4 py-3 text-[15px]" placeholder="(787) 000-0000" />
+            </label>
+            <label class="block">
+              <span class="block text-[12px] font-medium mb-2 text-warmgray uppercase tracking-[0.16em] mono">Servicio de interés</span>
+              <select class="field focus-cyan w-full rounded-lg px-4 py-3 text-[15px]">
+                <option>Contabilidad y Finanzas</option>
+                <option>Planillas y Cumplimiento Fiscal</option>
+                <option>Permisos y Licencias</option>
+                <option>Negocios y Propiedades</option>
+              </select>
+            </label>
+            <label class="block sm:col-span-2">
+              <span class="block text-[12px] font-medium mb-2 text-warmgray uppercase tracking-[0.16em] mono">Mensaje</span>
+              <textarea rows="5" class="field focus-cyan w-full rounded-lg px-4 py-3 text-[15px]" placeholder="Cuéntanos brevemente sobre tu negocio…"></textarea>
+            </label>
+            <div class="sm:col-span-2 flex items-center justify-between flex-wrap gap-4 pt-2">
+              <p class="text-[12px] text-warmgray max-w-sm">Al enviar aceptas que te contactemos para darle seguimiento a tu solicitud.</p>
+              <button type="submit" class="btn-cyan inline-flex items-center gap-2 bg-cyan text-black font-semibold text-[15px] px-6 py-3.5 rounded-full">
+                Enviar consulta
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 5 7 7-7 7"/></svg>
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <aside class="lg:col-span-5 reveal">
+          <div class="rounded-2xl border hairline p-7 bg-ink2">
+            <h3 class="text-[18px] font-bold">Información de contacto</h3>
+            <ul class="mt-5 space-y-4 text-[15px]">
+              <li class="flex items-start gap-3">
+                <span class="w-9 h-9 rounded-lg border hairline-strong flex items-center justify-center text-cyan shrink-0">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                </span>
+                <div>
+                  <div class="font-semibold">Oficina</div>
+                  <div class="text-white/65">M3 Mall, Bayamón, PR</div>
+                </div>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="w-9 h-9 rounded-lg border hairline-strong flex items-center justify-center text-cyan shrink-0">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                </span>
+                <div>
+                  <div class="font-semibold">Teléfono</div>
+                  <div class="text-white/65">(939) 272-4488</div>
+                </div>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="w-9 h-9 rounded-lg border hairline-strong flex items-center justify-center text-cyan shrink-0">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+                </span>
+                <div>
+                  <div class="font-semibold">Email</div>
+                  <div class="text-white/65">j.figueroa@prtaxconsultants.com</div>
+                </div>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="w-9 h-9 rounded-lg border hairline-strong flex items-center justify-center text-cyan shrink-0">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+                </span>
+                <div>
+                  <div class="font-semibold">Horario</div>
+                  <div class="text-white/65">Lun – Vie · 8:30 AM a 5:30 PM</div>
+                </div>
+              </li>
+            </ul>
+
+            <div class="mt-6 rounded-xl overflow-hidden border hairline">
+              <div class="map-grid-dark h-48 relative">
+                <div class="absolute inset-0 flex items-center justify-center">
+                  <div class="flex items-center gap-2 bg-ink border hairline rounded-full px-3 py-1.5 text-[12px] font-semibold">
+                    <span class="w-2 h-2 rounded-full bg-cyan animate-pulse"></span>
+                    Bayamón, PR
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="top-rule">
+    <div class="max-w-container mx-auto px-6 lg:px-10 pt-20 pb-10">
+      <!-- Big watermark -->
+      <div class="mb-16 text-[64px] sm:text-[120px] lg:text-[180px] leading-[0.85] font-extrabold tracking-[-0.04em] text-white/[0.06] select-none">
+        Tu negocio,<br/><span class="hero-accent" style="color: rgba(0,247,255,0.18)">en orden</span>.
+      </div>
+
+      <div class="grid lg:grid-cols-12 gap-12">
+        <div class="lg:col-span-4">
+          <img src="assets/logo-blanco-transparent.png" alt="PR Tax Consultants" class="h-24 w-auto" />
+          <p class="mt-5 text-white/65 text-[15px] leading-relaxed max-w-sm">
+            Firma puertorriqueña de contabilidad, planillas, permisos y consultoría fiscal para comerciantes, anfitriones y profesionales.
+          </p>
+        </div>
+
+        <div class="lg:col-span-2">
+          <div class="mono text-[11px] tracking-[0.18em] uppercase text-warmgray mb-5">Servicios</div>
+          <ul class="space-y-3 text-[14px]">
+            <li><a href="#servicios" class="footer-link text-white">Contabilidad y Finanzas</a></li>
+            <li><a href="#servicios" class="footer-link text-white">Planillas y Cumplimiento</a></li>
+            <li><a href="#servicios" class="footer-link text-white">Permisos y Licencias</a></li>
+            <li><a href="#servicios" class="footer-link text-white">Negocios y Propiedades</a></li>
+          </ul>
+        </div>
+
+        <div class="lg:col-span-2">
+          <div class="mono text-[11px] tracking-[0.18em] uppercase text-warmgray mb-5">Empresa</div>
+          <ul class="space-y-3 text-[14px]">
+            <li><a href="#nosotros" class="footer-link text-white">Nosotros</a></li>
+            <li><a href="#recursos" class="footer-link text-white">Recursos</a></li>
+            <li><a href="#contacto" class="footer-link text-white">Contacto</a></li>
+            <li><a href="#" class="footer-link text-white">Carreras</a></li>
+          </ul>
+        </div>
+
+        <div class="lg:col-span-4">
+          <div class="mono text-[11px] tracking-[0.18em] uppercase text-warmgray mb-5">Contacto</div>
+          <ul class="space-y-3 text-[14px] text-white">
+            <li>(939) 272-4488</li>
+            <li>j.figueroa@prtaxconsultants.com</li>
+            <li class="text-warmgray">M3 Mall, Bayamón, PR</li>
+          </ul>
+          <div class="mt-6 flex items-center gap-3">
+            <a href="#" aria-label="Instagram" class="w-10 h-10 rounded-full border hairline flex items-center justify-center text-white hover:text-cyan hover:border-cyan transition-colors">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg>
+            </a>
+            <a href="#" aria-label="Facebook" class="w-10 h-10 rounded-full border hairline flex items-center justify-center text-white hover:text-cyan hover:border-cyan transition-colors">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+            </a>
+            <a href="#" aria-label="LinkedIn" class="w-10 h-10 rounded-full border hairline flex items-center justify-center text-white hover:text-cyan hover:border-cyan transition-colors">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+            </a>
+            <a href="#" aria-label="WhatsApp" class="w-10 h-10 rounded-full border hairline flex items-center justify-center text-white hover:text-cyan hover:border-cyan transition-colors">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.5 8.5 0 1 1-3.6-6.95"/><path d="M3 21l1.65-4.5"/><path d="M8 11a4 4 0 0 0 5 4l2 2 1-1-2-2a4 4 0 0 0-4-5"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-16 pt-8 border-t hairline flex flex-wrap items-center justify-between gap-4">
+        <div class="text-warmgray text-[13px] mono">© 2026 PR TAX CONSULTANT · TODOS LOS DERECHOS RESERVADOS</div>
+        <div class="flex items-center gap-6 text-[13px]">
+          <a href="#" class="footer-link text-warmgray">Política de privacidad</a>
+          <a href="#" class="footer-link text-warmgray">Términos</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const header = document.getElementById('site-header');
+    const onScroll = () => {
+ 
