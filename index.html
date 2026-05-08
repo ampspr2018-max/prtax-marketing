@@ -11,6 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 
   <script src="assets/tailwind.js"></script>
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 
   <style type="text/tailwindcss">
     @theme {
@@ -728,22 +729,22 @@
             Completa el formulario y un consultor te contactará dentro de 24 horas hábiles.
           </p>
 
-          <form class="mt-10 grid sm:grid-cols-2 gap-5" onsubmit="event.preventDefault(); this.querySelector('button[type=submit]').innerText='Enviado ✓';">
+          <form id="contact-form" class="mt-10 grid sm:grid-cols-2 gap-5" novalidate>
             <label class="block">
               <span class="block text-[12px] font-medium mb-2 text-warmgray uppercase tracking-[0.16em] mono">Nombre completo</span>
-              <input required type="text" class="field focus-cyan w-full rounded-lg px-4 py-3 text-[15px]" placeholder="Tu nombre" />
+              <input required type="text" name="nombre" class="field focus-cyan w-full rounded-lg px-4 py-3 text-[15px]" placeholder="Tu nombre" />
             </label>
             <label class="block">
               <span class="block text-[12px] font-medium mb-2 text-warmgray uppercase tracking-[0.16em] mono">Email</span>
-              <input required type="email" class="field focus-cyan w-full rounded-lg px-4 py-3 text-[15px]" placeholder="tu@email.com" />
+              <input required type="email" name="email" class="field focus-cyan w-full rounded-lg px-4 py-3 text-[15px]" placeholder="tu@email.com" />
             </label>
             <label class="block">
               <span class="block text-[12px] font-medium mb-2 text-warmgray uppercase tracking-[0.16em] mono">Teléfono</span>
-              <input type="tel" class="field focus-cyan w-full rounded-lg px-4 py-3 text-[15px]" placeholder="(787) 000-0000" />
+              <input type="tel" name="telefono" class="field focus-cyan w-full rounded-lg px-4 py-3 text-[15px]" placeholder="(787) 000-0000" />
             </label>
             <label class="block">
               <span class="block text-[12px] font-medium mb-2 text-warmgray uppercase tracking-[0.16em] mono">Servicio de interés</span>
-              <select class="field focus-cyan w-full rounded-lg px-4 py-3 text-[15px]">
+              <select name="servicio" class="field focus-cyan w-full rounded-lg px-4 py-3 text-[15px]">
                 <option>Contabilidad y Finanzas</option>
                 <option>Planillas y Cumplimiento Fiscal</option>
                 <option>Permisos y Licencias</option>
@@ -752,12 +753,14 @@
             </label>
             <label class="block sm:col-span-2">
               <span class="block text-[12px] font-medium mb-2 text-warmgray uppercase tracking-[0.16em] mono">Mensaje</span>
-              <textarea rows="5" class="field focus-cyan w-full rounded-lg px-4 py-3 text-[15px]" placeholder="Cuéntanos brevemente sobre tu negocio…"></textarea>
+              <textarea rows="5" name="mensaje" class="field focus-cyan w-full rounded-lg px-4 py-3 text-[15px]" placeholder="Cuéntanos brevemente sobre tu negocio…"></textarea>
             </label>
+            <div class="cf-turnstile sm:col-span-2 mt-2" data-sitekey="0x4AAAAAADLKDWnGY4y8UdFX" data-theme="dark"></div>
+            <div id="form-feedback" class="sm:col-span-2 mt-4 hidden" role="status" aria-live="polite"></div>
             <div class="sm:col-span-2 flex items-center justify-between flex-wrap gap-4 pt-2">
               <p class="text-[12px] text-warmgray max-w-sm">Al enviar aceptas que te contactemos para darle seguimiento a tu solicitud.</p>
-              <button type="submit" class="btn-cyan inline-flex items-center gap-2 bg-cyan text-black font-semibold text-[15px] px-6 py-3.5 rounded-full">
-                Enviar consulta
+              <button id="submit-btn" type="submit" class="btn-cyan inline-flex items-center gap-2 bg-cyan text-black font-semibold text-[15px] px-6 py-3.5 rounded-full">
+                <span class="submit-label">Enviar consulta</span>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 5 7 7-7 7"/></svg>
               </button>
             </div>
@@ -894,5 +897,134 @@
 
   <script>
     const header = document.getElementById('site-header');
-    const onScroll = () => {
- 
+    const onScroll = () => {};
+  </script>
+
+  <script>
+    (function () {
+      const form = document.getElementById('contact-form');
+      if (!form) return;
+
+      const submitBtn = document.getElementById('submit-btn');
+      const submitLabel = submitBtn ? submitBtn.querySelector('.submit-label') : null;
+      const feedback = document.getElementById('form-feedback');
+      const originalLabel = submitLabel ? submitLabel.textContent : 'Enviar consulta';
+
+      const FEEDBACK_BASE = 'sm:col-span-2 mt-4 rounded-lg px-4 py-3 text-[14px] leading-relaxed';
+      const FEEDBACK_STYLES = {
+        success: 'border border-cyan/40 bg-cyan/10 text-cyan',
+        error: 'border border-red-500/50 bg-red-500/10 text-red-300',
+      };
+      const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      function showFeedback(kind, message) {
+        if (!feedback) return;
+        feedback.className = FEEDBACK_BASE + ' ' + (FEEDBACK_STYLES[kind] || FEEDBACK_STYLES.error);
+        feedback.textContent = message;
+      }
+
+      function hideFeedback() {
+        if (!feedback) return;
+        feedback.className = 'sm:col-span-2 mt-4 hidden';
+        feedback.textContent = '';
+      }
+
+      function setSubmitting(isSubmitting) {
+        if (!submitBtn) return;
+        submitBtn.disabled = isSubmitting;
+        submitBtn.setAttribute('aria-busy', isSubmitting ? 'true' : 'false');
+        submitBtn.style.opacity = isSubmitting ? '0.7' : '';
+        submitBtn.style.cursor = isSubmitting ? 'wait' : '';
+        if (submitLabel) submitLabel.textContent = isSubmitting ? 'Enviando…' : originalLabel;
+      }
+
+      function resetTurnstile() {
+        try {
+          if (window.turnstile && typeof window.turnstile.reset === 'function') {
+            window.turnstile.reset();
+          }
+        } catch (_) { /* noop */ }
+      }
+
+      function getTurnstileToken() {
+        const widget = form.querySelector('.cf-turnstile');
+        if (widget) {
+          const hidden = widget.querySelector('input[name="cf-turnstile-response"]');
+          if (hidden && hidden.value) return hidden.value;
+        }
+        try {
+          if (window.turnstile && typeof window.turnstile.getResponse === 'function') {
+            return window.turnstile.getResponse() || '';
+          }
+        } catch (_) { /* noop */ }
+        return '';
+      }
+
+      form.addEventListener('submit', async function (event) {
+        event.preventDefault();
+        hideFeedback();
+
+        const formData = new FormData(form);
+        const payload = {
+          nombre: (formData.get('nombre') || '').toString().trim(),
+          email: (formData.get('email') || '').toString().trim(),
+          telefono: (formData.get('telefono') || '').toString().trim(),
+          servicio: (formData.get('servicio') || '').toString().trim(),
+          mensaje: (formData.get('mensaje') || '').toString().trim(),
+        };
+
+        if (payload.nombre.length < 2) {
+          showFeedback('error', 'Por favor, escribe tu nombre completo.');
+          return;
+        }
+        if (!EMAIL_RE.test(payload.email)) {
+          showFeedback('error', 'Por favor, ingresa un email válido.');
+          return;
+        }
+        if (payload.mensaje.length < 5) {
+          showFeedback('error', 'Por favor, escríbenos un mensaje breve.');
+          return;
+        }
+
+        const token = getTurnstileToken();
+        if (!token) {
+          showFeedback('error', 'Espera a que termine la verificación de seguridad e intenta de nuevo.');
+          return;
+        }
+        payload.turnstile_token = token;
+
+        setSubmitting(true);
+
+        let response;
+        try {
+          response = await fetch('/api/submit-form', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify(payload),
+          });
+        } catch (_networkErr) {
+          setSubmitting(false);
+          resetTurnstile();
+          showFeedback('error', 'Error de conexión. Verifica tu internet e intenta de nuevo.');
+          return;
+        }
+
+        let data = {};
+        try { data = await response.json(); } catch (_) { /* server may not return JSON on hard errors */ }
+
+        if (response.ok && data && data.ok) {
+          form.reset();
+          resetTurnstile();
+          showFeedback('success', data.message || 'Tu consulta fue enviada. Te contactaremos en 24 horas hábiles.');
+        } else {
+          resetTurnstile();
+          const message = (data && data.message) ? data.message : 'No pudimos enviar tu consulta. Intenta de nuevo en unos momentos.';
+          showFeedback('error', message);
+        }
+
+        setSubmitting(false);
+      });
+    })();
+  </script>
+</body>
+</html>
